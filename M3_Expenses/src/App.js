@@ -24,7 +24,7 @@ const DUMMY_EXPENSES = [
     date: new Date(2021, 5, 12),
   },
 ];
-console.log(1);
+
 const App = () => {
   const [expenses, setExpenses] = useState(DUMMY_EXPENSES);
 
