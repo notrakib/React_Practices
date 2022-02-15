@@ -125,3 +125,23 @@ It allocates the return value and does not run on every evaluation
 const sortedList = useMemo(() => {
     return items.sort((a, b) => a - b);
   }, [items]); 
+
+
+We can treverse an object like an array
+
+  const data = await response.json();
+  const loadedMovies = [];
+
+  for (const x in data) {
+    console.log(x);
+    loadedMovies.push({
+      id: x,
+      title: data[x].title,
+      openingText: data[x].openingText,
+      releaseDate: data[x].releaseDate,
+    });
+  }
+
+
+We cant use normal loop or condition inside return
+Thats why we use map() or {!isValid && <h1></h1>}
