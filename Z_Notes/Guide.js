@@ -145,3 +145,23 @@ We can treverse an object like an array
 
 We cant use normal loop or condition inside return
 Thats why we use map() or {!isValid && <h1></h1>}
+
+const generatedId = data.name; // firebase-specific => "name" contains generated id
+
+
+Bad Practice (can be done only in redux-toolokit through createSlice())
+const CounterReducer = (state = initial, action) => {
+  if (action.type === 1) {
+    state.counter++;
+    return state;
+  }
+}
+
+Good Practice
+const CounterReducer = (state = initial, action) => {
+  if (action.type === 1) {
+    return { counter: state.counter + 1, showCounter: state.showCounter };
+  }
+}
+
+In Redux, Reducer function must be side-effect free
