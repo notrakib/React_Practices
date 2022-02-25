@@ -164,4 +164,46 @@ const CounterReducer = (state = initial, action) => {
   }
 }
 
-In Redux, Reducer function must be side-effect free
+In Redux, Reducer function must be side-effect free & async code free
+Thats why we need action creator Thunk. So we write a code in a redux-slice 
+file which can be written into any other component file and later we can
+dispatch that function from other component.
+
+fetch() function
+PUT,PATCH,POST,GET
+
+dispatch(CartItemAction.replaceCart(data || {}));
+
+
+npm install
+- @reduxjs/toolkit
+- react-redux
+- react-router-dom 
+
+
+<Switch>
+        <Route path="/" exact>
+          <Redirect to="/quotes" />
+        </Route>
+        <Route path="/quotes" exact>
+          <AllQuotes />
+        </Route>
+        <Route path="/quotes/:quoteId">
+          <QuoteDetail />
+        </Route>
+        <Route path="/new-quote">
+          <NewQuote />
+        </Route>
+        <Route path="*">
+          <NotFound></NotFound>
+        </Route>
+</Switch>
+
+Link directs to pre-defined Route path
+while Route defines a new path
+On the other hand Link and NavLink are Same
+but navLink adds style attributes to the active routes
+
+useHistory makes programmatic action to redirect into a path
+history.push("/quotes");
+

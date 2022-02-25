@@ -1,0 +1,40 @@
+import classes from "./CartItem.module.css";
+import { useDispatch } from "react-redux";
+import { CartItemAction } from "../store/CartItemSlice";
+
+const CartItem = (props) => {
+  const { id, title, amount, total, price } = props.item;
+  const dispatch = useDispatch();
+
+  const AddItemHandler = (event) => {
+    event.preventDefault();
+    dispatch(CartItemAction.addItem({ id, title, price }));
+  };
+
+  const RemoveItemHandler = (event) => {
+    event.preventDefault();
+    dispatch(CartItemAction.removeItem({ id, title, price }));
+  };
+  return (
+    <li key={id} className={classes.item}>
+      <header>
+        <h3>{title}</h3>
+        <div className={classes.price}>
+          ${total.toFixed(2)}{" "}
+          <span className={classes.itemprice}>(${price.toFixed(2)}/item)</span>
+        </div>
+      </header>
+      <div className={classes.details}>
+        <div className={classes.quantity}>
+          x <span>{amount}</span>
+        </div>
+        <div className={classes.actions}>
+          <button onClick={RemoveItemHandler}>-</button>
+          <button onClick={AddItemHandler}>+</button>
+        </div>
+      </div>
+    </li>
+  );
+};
+
+export default CartItem;
