@@ -179,31 +179,236 @@ npm install
 - @reduxjs/toolkit
 - react-redux
 - react-router-dom 
+- next react react-dom
+- mongodb
 
 
-<Switch>
-        <Route path="/" exact>
-          <Redirect to="/quotes" />
-        </Route>
-        <Route path="/quotes" exact>
-          <AllQuotes />
-        </Route>
-        <Route path="/quotes/:quoteId">
-          <QuoteDetail />
-        </Route>
-        <Route path="/new-quote">
-          <NewQuote />
-        </Route>
-        <Route path="*">
-          <NotFound></NotFound>
-        </Route>
-</Switch>
+<Routes>
+        <Route path="/" element={<Navigate to="/quotes" />} />
+
+        <Route path="/quotes" element={<AllQuotes />} />
+
+        <Route path="/quotes/:quoteId/*" element={<QuoteDetail />} />
+
+        <Route path="/new-quote" element={<NewQuote />} />
+
+        <Route path="*" element={<NotFound />} />
+</Routes>
+
+Nested Routes
+<Routes>
+        <Route path={""} element={<Link to={"comments"}>Load Comments</Link>} />
+        <Route path={"comments"} element={<Comments />} />
+</Routes>
+
 
 Link directs to pre-defined Route path
 while Route defines a new path
 On the other hand Link and NavLink are Same
 but navLink adds style attributes to the active routes
 
-useHistory makes programmatic action to redirect into a path
-history.push("/quotes");
+UseNavigate makes programmatic action to redirect into a path
+navigate("/quotes");
 
+UseLocation can extract the query params from the url
+
+<Routes>
+        <Route path={""} element={<Link to={"comments"}>Load Comments</Link>} />
+        <Route path={"comments"} element={<Comments />} />
+</Routes>
+
+Route also works like a condition
+
+Firebase Authentication
+fetch(
+  "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAsnxrj9fT0O6gs587njUtkTQpbYBPn7Ls",
+  {
+    method: "POST",
+    body: JSON.stringify({
+      email: enteredEmail,
+      password: enteredPassword,
+      returnSecureToken: true,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+
+  For changing password
+  fetch(
+    "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyATuOp4oHkAg0O8ZwHW0nPaxhDhxo7YB-g",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        idToken: authCtx.token,
+        password: newPassRef.current.value,
+        returnSecureToken: true,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+it returns an idtoken which is used to request on the server
+
+
+new Date(new Date().getTime() + +data.expiresIn * 1000).getTime();
+
+new Date() return current time new Date(x).getTime() returns milisecond
+
+
+Next.js automatically import React
+npm run dev
+
+
+For  Next.js
+import Link from "next/link";
+<Link href="/section/ok">OK</Link>
+
+import { useRouter } from "next/router";
+const router = useRouter();
+router.query.id
+
+To navigate programtically and without Link
+const router = useRouter();
+router.push('/')
+
+_app.js works as app.js and we can add common wrapper there
+
+
+This function helps to pre-render a page like if that page 
+has some sort of http request that needs to be resolved
+It is good for SEO
+export async function getStaticProps(context) {
+  // fetch data from an API
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS,
+    },
+    revalidate: 3600  [will re-render on the server in every hour]
+  };
+}
+
+same as above but it is for most frequently chaanged data
+export async function getServerSideProps(context) {
+     const req = context.req;
+     const res = context.res;
+     // fetch data from an API
+     return {
+  /    props: {
+         meetups: DUMMY_MEETUPS
+       }
+     };
+   }
+
+
+
+For dynamic routing
+   export async function getStaticPaths() {
+    return {
+      fallback: false,
+      paths: [
+        {
+          params: {
+            meetupId: "m1",
+          },
+        },
+        {
+          params: {
+            meetupId: "m2",
+          },
+        },
+      ],
+    };
+  }
+  
+  export async function getStaticProps(context) {
+    // fetch data for a single meetup
+  
+    const meetupId = context.params.meetupId;
+  
+    console.log(meetupId);
+  
+    return {
+      props: {
+        meetupData: {
+          image:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Stadtbild_M%C3%BCnchen.jpg/1280px-Stadtbild_M%C3%BCnchen.jpg",
+          id: meetupId,
+          title: "First Meetup",
+          address: "Some Street 5, Some City",
+          description: "This is a first meetup",
+        },
+      },
+    };
+  }
+
+  getStaticPaths() only used for getStaticProps()
+
+
+
+MongoDB code
+import { MongoClient } from "mongodb";
+
+async function handler(req, res) {
+  if (req.method === "POST") {
+    const data = req.body;
+    const client = await MongoClient.connect(
+      "mongodb+srv://rakib:123456Aa@cluster0.f4fx5.mongodb.net/meetup?retryWrites=true&w=majority"
+    );
+    const db = client.db();
+    const meetupsCollection = db.collection("meetup");
+    const result = await meetupsCollection.insertOne(data);
+    client.close();
+    res.status(201).json({ message: "Meetup inserted!" });
+  }
+}
+
+
+const response = await fetch("/api/new-meetup", {
+  method: "POST",
+  body: JSON.stringify(enteredMeetupData),
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// fetch data from an API
+const client = await MongoClient.connect(
+  "mongodb+srv://rakib:123456Aa@cluster0.f4fx5.mongodb.net/meetup?retryWrites=true&w=majority"
+);
+const db = client.db();
+
+const meetupsCollection = db.collection("meetup");
+
+const meetups = await meetupsCollection.find().toArray();
+
+client.close();
+
+console.log(1) if it prints in terminal then it is on server side 
+if in browser-console then it is on client side 
+
+const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+return {
+  fallback: false,
+  paths: meetups.map((meetup) => ({
+    params: {
+      meetupId: meetup._id.toString(),
+    },
+  })),
+};
+
+const meetup = await meetupsCollection.findOne({
+  _id: ObjectId(meetupId),
+});
+
+
+import Head from "next/head";
+<Head>
+        <title>React Meetups</title>
+        <meta
+          name="description"
+          content="Browse a huge list of highly active React meetups!"
+        />
+      </Head>

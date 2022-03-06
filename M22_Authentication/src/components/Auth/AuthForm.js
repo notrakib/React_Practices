@@ -24,10 +24,10 @@ const AuthForm = () => {
     let url;
     if (isLogin) {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyATuOp4oHkAg0O8ZwHW0nPaxhDhxo7YB-g";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAsnxrj9fT0O6gs587njUtkTQpbYBPn7Ls";
     } else {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyATuOp4oHkAg0O8ZwHW0nPaxhDhxo7YB-g";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAsnxrj9fT0O6gs587njUtkTQpbYBPn7Ls";
     }
     try {
       const response = await fetch(url, {
@@ -46,12 +46,7 @@ const AuthForm = () => {
         setIsLoading(false);
         const data = await response.json();
 
-        const expireDate = new Date(
-          new Date().getTime() + +data.expiresIn * 1000
-        ).getTime();
-        // const expireDate = new Date(new Date().getTime() + +5000).getTime();
-
-        authCtx.login(data.idToken, expireDate);
+        authCtx.login(data.idToken, +data.expiresIn * 1000);
         history.replace("/");
         return data;
       } else {
