@@ -399,8 +399,12 @@ return {
   })),
 };
 
-const meetup = await meetupsCollection.findOne({
-  _id: ObjectId(meetupId),
+const meetup = await meetupsCollection.find( //not works
+  (meetups) => meetups.title === "a"
+);
+
+const meetup = await meetupsCollection.findOne({ // works
+  _id: ObjectId(meetupId), 
 });
 
 
