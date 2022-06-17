@@ -416,3 +416,23 @@ import Head from "next/head";
           content="Browse a huge list of highly active React meetups!"
         />
       </Head>
+
+
+
+
+
+
+
+
+In react parent component CSS influence child component CSS like this div will
+influence all the div of its child component
+
+.recentposts div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: rgb(136, 226, 163);
+  border-radius: 20px;
+  margin: 15px;
+  padding: 20px;
+}
