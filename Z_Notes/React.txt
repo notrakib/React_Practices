@@ -1,0 +1,25 @@
+Local vs Session - Local gets not deleted automatically / Session gets deleted immdeately user closes the browser
+both has 10MB storage
+both are browser storage
+
+Advantage of React
+1. One way data binding (helps debugging)
+2. Virtual DOM
+3. Reusable components
+4. JSX which is similar to HTML
+
+Folder structure
+src-|
+     components-|
+     		 helper, store, hooks
+     		 
+Fragement
+An empty tag which reduces number of unnecessary div tag
+
+State/props
+State mutable
+props immutable
+
+map and forEach 
+map returns a new array
+forEach mutates the array
